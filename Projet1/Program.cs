@@ -48,19 +48,20 @@ namespace Projet1
             string line;
             //chemin relatif projet1/bin/debug/netcoreapp1/iris.txt
             string chemin = Path.GetFullPath(path);
+            Console.WriteLine(chemin);
             // Read the file and display it line by line. 
-            if (System.IO.File.Exists(chemin))
+            if (File.Exists(chemin))
             {
-                System.IO.StreamReader file =
-                    new System.IO.StreamReader(chemin);
+                StreamReader file =
+                    new StreamReader(chemin);
                 while ((line = file.ReadLine()) != null)
                 {
-                    System.Console.WriteLine(line);
+                    Console.WriteLine(line);
                     counter++;
                 }
 
                 file.Close();
-                System.Console.WriteLine("There were {0} lines.", counter);
+                Console.WriteLine("There were {0} lines.", counter);
             }
             else
                 Console.WriteLine("Erreur à l'ouverture du fichier, chemin erronné");
