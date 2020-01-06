@@ -1,0 +1,11 @@
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\bin\Debug\netcoreapp2.1\Projet1.deps.json
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\bin\Debug\netcoreapp2.1\Projet1.runtimeconfig.json
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\bin\Debug\netcoreapp2.1\Projet1.runtimeconfig.dev.json
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\bin\Debug\netcoreapp2.1\Projet1.dll
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\bin\Debug\netcoreapp2.1\Projet1.pdb
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\obj\Debug\netcoreapp2.1\Projet1.csprojAssemblyReference.cache
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\obj\Debug\netcoreapp2.1\Projet1.csproj.CoreCompileInputs.cache
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\obj\Debug\netcoreapp2.1\Projet1.AssemblyInfoInputs.cache
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\obj\Debug\netcoreapp2.1\Projet1.AssemblyInfo.cs
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\obj\Debug\netcoreapp2.1\Projet1.dll
+C:\Users\mleqsiouer\source\repos\Projet1\Projet1\obj\Debug\netcoreapp2.1\Projet1.pdb
