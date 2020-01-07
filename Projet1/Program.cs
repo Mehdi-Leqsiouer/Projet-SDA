@@ -5,12 +5,12 @@ namespace Projet1
 {
     class Program
     {
-   
+
         static void SaisitsUtilisateur(ref int Y, ref int seuil1, ref int seuil2, ref int min,
             ref int tailleMax)
         {
             bool saisie = false;
-            
+
             do
             {
                 Console.Write("Saisissez la valeur Y à prédire ");
@@ -46,6 +46,11 @@ namespace Projet1
         {
             int counter = 0;
             string line;
+            int[] Y = new int[120];
+            float[] x1 = new float[120];
+            float[] x2 = new float[120];
+            float[] x3 = new float[120];
+            float[] x4 = new float [120];
             //chemin relatif projet1/bin/debug/netcoreapp1/iris.txt
             string chemin = Path.GetFullPath(path);
             Console.WriteLine(chemin);
@@ -57,6 +62,13 @@ namespace Projet1
                 while ((line = file.ReadLine()) != null)
                 {
                     Console.WriteLine(line);
+                    if (counter > 0)
+                    {
+                        Y[counter-1] = line[0];
+                        x1[counter - 1] = line[0];
+                        x2[counter - 1] = line[0];
+                        x3[counter - 1] = line[0];
+                    }
                     counter++;
                 }
 
@@ -68,6 +80,54 @@ namespace Projet1
             // Suspend the screen.  
         }
 
+        static float Mediane(float[] val)
+        {
+            float res = 0;
+            int n = val.Length;
+            if (n % 2 == 0)
+            {
+                res = (val[n / 2] + val[(n / 2)+1]) / 2;
+            }
+            else
+                res = val[(n+1) / 2];
+            return res;
+        }
+
+        static float Maximum(float[] val)
+        {
+            float res = 0;
+            for (int i =0;i<val.Length;i++)
+            {
+                if (val[i] > res)
+                    res = val[i];
+            }
+            return res;
+        }
+
+        static float SecondMaximum(float[] val )
+        {
+            float res = 0;
+            float max1 = Maximum(val);
+            for (int i =0;i<val.Length;i++)
+            {
+                if (val[i] > res && val[i] < max1)
+                    res = val[i];
+            }
+            return res;
+        }
+
+        static float MedianeCorrigee(float [] val)
+        {
+            float res = 0;
+            float mediane = Mediane(val);
+            float max = Maximum(val);
+            if (mediane == max)
+                res = SecondMaximum(val);
+            else
+                res = max;
+            return res;
+        }
+
         static void Main(string[] args)
         {
             int y = -1;
@@ -75,7 +135,7 @@ namespace Projet1
             int seuil2 = -1;
             int min = -1;
             int tailleMax = -1;
-            SaisitsUtilisateur(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
+            //SaisitsUtilisateur(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
 
             ReadFile("iris.txt");
             Console.ReadKey();
