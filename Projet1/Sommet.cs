@@ -10,19 +10,20 @@ namespace Projet1
     {
         //Attributs
         //Attributs
-        private int valeur;
+        private double [,]valeur;
         Sommet filsGauche;
         Sommet filsDroit;
+        Sommet parent;
         //Constructeur
-        public Sommet(int valeur, Sommet filsGauche, Sommet filsDroit)
+        public Sommet(double[,] valeur, Sommet filsGauche, Sommet filsDroit, Sommet parent)
         {
             this.valeur = valeur;
             this.filsGauche = filsGauche;
             this.filsDroit = filsDroit;
-
+            this.parent = parent;
         }
         //Propriétés 
-        public int Valeur
+        public double[,] Valeur
         {
             get { return valeur; }
         }
@@ -35,6 +36,12 @@ namespace Projet1
         {
             get { return filsGauche; }
             set { filsGauche = value; }
+        }
+
+        public Sommet Parent
+        {
+            get { return parent; }
+            set { parent = value; }
         }
     }
 }

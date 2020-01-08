@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 
 namespace Projet1
@@ -6,54 +7,27 @@ namespace Projet1
     class Program
     {
 
-        static void SaisitsUtilisateur(ref int Y, ref int seuil1, ref int seuil2, ref int min,
-            ref int tailleMax)
+        static void RemplirTableau(string[] soustab, double[,] echantillon, double[] x1, double[] x2, double[] x3, double[] x4, int counter)
         {
-            bool saisie = false;
 
-            do
-            {
-                Console.Write("Saisissez la valeur Y à prédire ");
-                saisie = int.TryParse(Console.ReadLine(), out Y);
-            } while (saisie == false || Y <= 0 || Y >= 4);
+            for (int i = 0; i < soustab.Length; i++)
+                echantillon[counter - 1, i] = Double.Parse(soustab[i], CultureInfo.InvariantCulture);
 
-            do
-            {
-                Console.Write("Saisissez le seuil minimal de précision en % ");
-                saisie = int.TryParse(Console.ReadLine(), out seuil1);
-            } while (saisie == false || seuil1 <= 0 || seuil1 > 100);
+            x1[counter - 1] = echantillon[counter - 1, 1];
+            x2[counter - 1] = echantillon[counter - 1, 2];
+            x3[counter - 1] = echantillon[counter - 1, 3];
+            x4[counter - 1] = echantillon[counter - 1, 4];
 
-            do
-            {
-                Console.Write("Saisissez le seuil maximal de précision en % ");
-                saisie = int.TryParse(Console.ReadLine(), out seuil2);
-            } while (saisie == false || seuil2 <= 0 || seuil2 > 100 || seuil2 <= seuil1);
-
-            do
-            {
-                Console.Write("Saisissez le nombre minimal d'invidivu par échantillon ");
-                saisie = int.TryParse(Console.ReadLine(), out min);
-            } while (saisie == false || min <= 0 || min > 100);
-
-            do
-            {
-                Console.Write("Saisissez la taille maximale de l'arbre ");
-                saisie = int.TryParse(Console.ReadLine(), out tailleMax);
-            } while (saisie == false || tailleMax <= 0);
         }
 
-        static void ReadFile(String path)
+        static void ReadFile(String path,double[,] echantillon,double[]x1, double[]x2,double[]x3,double[]x4)
         {
             int counter = 0;
             string line;
-            int[] Y = new int[120];
-            float[] x1 = new float[120];
-            float[] x2 = new float[120];
-            float[] x3 = new float[120];
-            float[] x4 = new float [120];
+
             //chemin relatif projet1/bin/debug/netcoreapp1/iris.txt
             string chemin = Path.GetFullPath(path);
-            Console.WriteLine(chemin);
+            //Console.WriteLine(chemin);
             // Read the file and display it line by line. 
             if (File.Exists(chemin))
             {
@@ -61,84 +35,91 @@ namespace Projet1
                     new StreamReader(chemin);
                 while ((line = file.ReadLine()) != null)
                 {
-                    Console.WriteLine(line);
+                    //Console.WriteLine(line);
+                    string[] soustab = line.Split(' ');
                     if (counter > 0)
-                    {
-                        Y[counter-1] = line[0];
-                        x1[counter - 1] = line[0];
-                        x2[counter - 1] = line[0];
-                        x3[counter - 1] = line[0];
-                    }
+                        RemplirTableau(soustab, echantillon, x1, x2, x3, x4, counter);
                     counter++;
                 }
 
                 file.Close();
-                Console.WriteLine("There were {0} lines.", counter);
+                //Console.WriteLine("There were {0} lines.", counter);
             }
             else
                 Console.WriteLine("Erreur à l'ouverture du fichier, chemin erronné");
-            // Suspend the screen.  
+            //AffichageTableau(x4);
         }
 
-        static float Mediane(float[] val)
+        static void AffichageTableau(double[] tableau)
         {
-            float res = 0;
-            int n = val.Length;
-            if (n % 2 == 0)
+            for (int i = 0; i < tableau.Length; i++)
+                Console.WriteLine(" Valeur : " + tableau[i]);
+            Console.WriteLine("Fin");
+        }
+
+        static void AffichageTableau2D(double[,] tableau)
+        {
+            for(int i = 0; i < tableau.GetLength(0);i++)
             {
-                res = (val[n / 2] + val[(n / 2)+1]) / 2;
+                for(int j = 0; j <tableau.GetLength(1);j++)
+                {
+                    Console.Write(tableau[i, j] + " ");
+                }
+                Console.WriteLine();
             }
-            else
-                res = val[(n+1) / 2];
-            return res;
+            Console.WriteLine("Fin");
         }
 
-        static float Maximum(float[] val)
+        static void SaisitsUtilisateurIndividu(ref double x1, ref double x2, ref double x3, ref double x4)
         {
-            float res = 0;
-            for (int i =0;i<val.Length;i++)
+            bool saisie = false;
+
+            do
             {
-                if (val[i] > res)
-                    res = val[i];
-            }
-            return res;
-        }
+                Console.Write("Saisissez la variable x1 ");
+                saisie = double.TryParse(Console.ReadLine(), out x1);
+            } while (saisie == false || x1 <= 0);
 
-        static float SecondMaximum(float[] val )
-        {
-            float res = 0;
-            float max1 = Maximum(val);
-            for (int i =0;i<val.Length;i++)
+            do
             {
-                if (val[i] > res && val[i] < max1)
-                    res = val[i];
-            }
-            return res;
-        }
+                Console.Write("Saisissez la variable x2 ");
+                saisie = double.TryParse(Console.ReadLine(), out x2);
+            } while (saisie == false || x2 <= 0);
 
-        static float MedianeCorrigee(float [] val)
-        {
-            float res = 0;
-            float mediane = Mediane(val);
-            float max = Maximum(val);
-            if (mediane == max)
-                res = SecondMaximum(val);
-            else
-                res = max;
-            return res;
+            do
+            {
+                Console.Write("Saisissez la variable x3 ");
+                saisie = double.TryParse(Console.ReadLine(), out x3);
+            } while (saisie == false || x3 <= 0);
+
+            do
+            {
+                Console.Write("Saisissez la variable x4 ");
+                saisie = double.TryParse(Console.ReadLine(), out x4);
+            } while (saisie == false || x4 <= 0);
+
         }
 
         static void Main(string[] args)
         {
-            int y = -1;
-            int seuil1 = -1;
-            int seuil2 = -1;
-            int min = -1;
-            int tailleMax = -1;
-            //SaisitsUtilisateur(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
+            double[,] echantillon = new double[120, 5];
+            double[] x1 = new double[120];
+            double[] x2 = new double[120];
+            double[] x3 = new double[120];
+            double[] x4 = new double[120];
 
-            ReadFile("iris.txt");
+            ReadFile("iris.txt", echantillon, x1, x2, x3,x4);
+            ArbreDecision arbre = new ArbreDecision(echantillon, x1,x2,x3,x4);
+            //AffichageTableau2D(echantillon);
+            double x1N = -1;
+            double x2N = -1;
+            double x3N = -1;
+            double x4N = -1;
+           // SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
             Console.ReadKey();
+
+
+            
         }
     }
 }
