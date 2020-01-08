@@ -115,7 +115,7 @@ namespace Projet1
             double x2N = -1;
             double x3N = -1;
             double x4N = -1;
-           // SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
+            SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
             Console.ReadKey();
 
 
