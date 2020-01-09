@@ -9,20 +9,22 @@ namespace Projet1
         //Attributs
         private List<double[]> valeur;
         private int variableDivisee;
+        private double variableDiviseeValeur;
         Sommet filsGauche;
         Sommet filsDroit;
         Sommet parent;
         //Constructeur
-        public Sommet(List<double[]> valeur, int variable,Sommet filsGauche, Sommet filsDroit, Sommet parent)
+        public Sommet(List<double[]> valeur, int variable, double  variableValeur, Sommet filsGauche, Sommet filsDroit, Sommet parent)
         {
             this.valeur = valeur;
             this.variableDivisee = variable;
+            this.variableDiviseeValeur = variableValeur;
             this.filsGauche = filsGauche;
             this.filsDroit = filsDroit;
             this.parent = parent;
         }
 
-        public void AjoutValeur(double [] valeurs)
+        public void AjoutValeur(double[] valeurs)
         {
             valeur.Add(valeurs);
         }
@@ -30,11 +32,11 @@ namespace Projet1
         public override string ToString()
         {
             string msg = " ";
-            foreach(var el in valeur)
+            foreach (var el in valeur)
             {
-                for (int i = 0; i < el.Length; i ++)
+                for (int i = 0; i < el.Length; i++)
                 {
-                    msg += " "+el[i];
+                    msg += " " + el[i];
                 }
                 msg += "\n";
             }
@@ -53,6 +55,12 @@ namespace Projet1
         {
             get { return variableDivisee; }
             set { variableDivisee = value; }
+        }
+
+        public double VariableValeur
+        {
+            get { return variableDiviseeValeur; }
+            set { variableDiviseeValeur = value; }
         }
 
         public Sommet FilsDroit

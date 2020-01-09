@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Projet1
 {
@@ -15,19 +16,23 @@ namespace Projet1
         int tailledepart;
         //Constructeurs
 
-        public ArbreDecision(Sommet racine)
-        {
-            this.racine = racine;
-        }
         public ArbreDecision(List<double[]> echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
         {
-            this.racine = new Sommet(echantillon, 0,null, null, null);
+            this.racine = new Sommet(echantillon, 0, 0,null, null, null);
             SaisitsUtilisateurArbre(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
+
+            /*y = 2;
+            seuil1 = 10;
+            seuil2 = 90;
+            min = 10;
+            tailleMax = 8;*/
+
             this.tailledepart = echantillon.Count;
             double mediane_x1 = MedianeCorrigee(x1);
             double mediane_x2 = MedianeCorrigee(x2);
             double mediane_x3 = MedianeCorrigee(x3);
             double mediane_x4 = MedianeCorrigee(x4);
+           // Console.WriteLine(mediane_x1);
             CreationArbre(racine, echantillon, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
         }
 
@@ -38,69 +43,12 @@ namespace Projet1
         }
 
 
-        public void InsertionIndivius(Sommet arbre,double[] valeur, double[] x1, double [] x2, double []x3, double[] x4)
+        public void RemplirTableau(double[] soustab, double[] x1, double[] x2, double[] x3, double[] x4,int i)
         {
-            double mediane_x1 = MedianeCorrigee(x1);
-            double mediane_x2 = MedianeCorrigee(x2);
-            double mediane_x3 = MedianeCorrigee(x3);
-            double mediane_x4 = MedianeCorrigee(x4);
-            int critere = 0;
-
-            arbre.AjoutValeur(valeur);
-
-            if (arbre.FilsGauche != null)
-                critere = arbre.FilsGauche.Variable;
-            else if (arbre.FilsDroit != null)
-                critere = arbre.FilsDroit.Variable;
-
-            if (critere == 1)
-            {
-                if (valeur[critere] <= mediane_x1)
-                {
-                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
-                }
-                else
-                {
-                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
-                }
-            }
-            else if (critere == 2)
-            {
-                if (valeur[critere] <= mediane_x2)
-                {
-                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
-                }
-                else
-                {
-                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
-                }
-            }
-
-            else if (critere == 3)
-            {
-                if (valeur[critere] <= mediane_x3)
-                {
-                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
-                }
-                else
-                {
-                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
-                }
-            }
-
-            else if (critere == 4)
-            {
-                if (valeur[critere] <= mediane_x4)
-                {
-                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
-                }
-                else
-                {
-                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
-                }
-            }
-            else
-                return; //FIN
+            x1[i] = soustab[1];
+            x2[i] = soustab[2];
+            x3[i] = soustab[3];
+            x4[i] = soustab[4];
         }
 
         //Exo6
@@ -111,11 +59,34 @@ namespace Projet1
                 return;
                 //AffichagePrefixe(arbre);
             }
+
+
             else
             {
-                double pourcentage = PourcentageIndivius(y, val) * 100;
-                if (tailleMax < HauteurArbre(racine) && val.Count > ((min*tailledepart)/100) && (pourcentage > seuil1 && pourcentage < seuil2)) // test ok
+                double pourcentage = PourcentageIndividus(y, val) * 100;
+                
+                if (tailleMax > HauteurArbre(racine) && val.Count > ((min * tailledepart) / 100) && (pourcentage > seuil1 && pourcentage < seuil2)) // test ok
                 {
+
+                    double[] x1 = new double[val.Count];
+                    double[] x2 = new double[val.Count];
+                    double[] x3 = new double[val.Count];
+                    double[] x4 = new double[val.Count];
+
+                    int i = 0;
+                    foreach(var el in val)
+                    {
+                        RemplirTableau(el, x1, x2, x3, x4,i);
+                        i++;
+                    }
+
+                    mediane_x1 = MedianeCorrigee(x1);
+                    mediane_x2 = MedianeCorrigee(x2);
+                    mediane_x3 = MedianeCorrigee(x3);
+                    mediane_x4 = MedianeCorrigee(x4);
+
+
+
                     // choix du XI
                     int x1_nb1 = DivisionVariableXi(val, 1, mediane_x1, false);
                     int x1_nb2 = DivisionVariableXi(val, 1, mediane_x1, true);
@@ -135,6 +106,8 @@ namespace Projet1
 
                     //meilleur rapport gauche / droite
                     int max = MeilleureDivision(a, b, c, d);
+
+                   // Console.WriteLine(mediane_x1 + " " + mediane_x2 + " " + mediane_x3 + " " + mediane_x4);
 
                     int tailleG = 0;
                     int tailleD = 0;
@@ -165,36 +138,79 @@ namespace Projet1
                         mediane = mediane_x4;
                     }
 
-
+                   // Console.WriteLine(tailleG + " " + tailleD);
                     //TODO : diviser la population
-                    List<double[]> gauche = NouveauEchantillon(val, max, mediane, false, tailleG);
-                    List<double[]> droite = NouveauEchantillon(val, max, mediane, true, tailleD);
+                   // if (!PrecisionEstMax(val))
+                   // {
+                        List<double[]> gauche = NouveauEchantillon(val, max, mediane, false, tailleG);
+                        List<double[]> droite = NouveauEchantillon(val, max, mediane, true, tailleD);
 
-                    arbre.FilsGauche = new Sommet(gauche, max,null, null, arbre);
-                    arbre.FilsDroit = new Sommet(droite, max,null, null, arbre);
+                        //if (!PrecisionEstMax(gauche) && !PrecisionEstMax(droite))
+                        //    return;
 
-                    CreationArbre(arbre.FilsGauche, gauche, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
-                    CreationArbre(arbre.FilsDroit, droite, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
+                        arbre.FilsGauche = new Sommet(gauche, max, mediane,null, null, arbre);
+                        arbre.FilsDroit = new Sommet(droite, max, mediane,null, null, arbre);
+
+                       // AffichageListe(gauche);
+                        //AffichageListe(droite);
+
+                        CreationArbre(arbre.FilsGauche, gauche, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
+                        CreationArbre(arbre.FilsDroit, droite, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
+                   // }
+                    
                 }
             }
         }
 
+        public bool PrecisionEstMax(List<double[]> liste)
+        {
+            bool res = true;
+            double[] tmp = liste[0];
+            double tmp2 = tmp[0];
+            foreach(var el in liste)
+            {
+                if (el[0] != tmp2)
+                    return false;
+            }
+            return res;
+        }
+
+        public void AffichageListe(List<double[]> liste)
+        {
+            Console.WriteLine("----- Début sommet ------");
+            Console.WriteLine("Taille : " + liste.Count);
+            foreach(var el in liste)
+            {
+                for (int i = 0; i < el.Length;i++)
+                {
+                    Console.Write(el[i] + " " );
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("----- Fin sommet ------");
+        }
+
         public List<double[]> NouveauEchantillon(List<double[]> individus, int xi, double mediane_xi, bool gauche_droite, int taille)
         {
-            double[] tab = new double[5];
+            
+            //AffichageListe(individus);
             List<double[]> res = new List<double[]>();
-            int j = 0;
+            if (individus == null)
+                return null;
             foreach (var el in individus)
             {
+                double[] tab = new double[5];
                 if (!gauche_droite)
                 {
                     if (el[xi] <= mediane_xi)
                     {
                         for (int z = 0; z < 5; z++)
                         {
-                            tab[z] = el[z];
+                            if (el[z] != 0)
+                            {
+                                tab[z] = el[z];
+                            }
                         }
-                        j++;
                     }
                 }
                 else
@@ -203,13 +219,18 @@ namespace Projet1
                     {
                         for (int z = 0; z < 5; z++)
                         {
-                            tab[z] = el[z];
+                            if (el[z] != 0)
+                            {
+                                tab[z] = el[z];
+                            }
                         }
-                        j++;
                     }
                 }
+                //AffichageTableau(tab);
+                if (tab[0] != 0)
+                    res.Add(tab);
             }
-            res.Add(tab);
+            //AffichageListe(res);
             return res;
         }
 
@@ -239,19 +260,19 @@ namespace Projet1
             {
                 if (!gauche_droite)
                 {
-                    if (el[xi] <= mediane_xi)
+                    if (el[xi] <= mediane_xi && el[xi] != 0)
                         res++;
                 }
                 else
                 {
-                    if (el[xi] > mediane_xi)
+                    if (el[xi] > mediane_xi && el[xi] != 0)
                         res++;
                 }
             }
             return res;
         }
 
-        public double PourcentageIndivius(int parY, List<double[]> individus)
+        public double PourcentageIndividus(int parY, List<double[]> individus)
         {
             double res = 0;
             int compteur = 0;
@@ -261,13 +282,87 @@ namespace Projet1
                 if (el[0] == parY)
                     compteur++;
             }
-            res = compteur / total;
+            res = (float)compteur / total;
             return res;
         }
         /* public void InsertionSommet(Sommet arbre, int val)
          {
              _InsertionSommet(arbre, val);
          }*/
+
+        public void InsertionIndivius(Sommet arbre, double[] valeur)
+        {
+            int critere = 0;
+            double valcritere = 0;
+            //Console.WriteLine(arbre.Variable + " " + arbre.VariableValeur);
+
+             if (arbre.FilsGauche == null && arbre.FilsDroit == null)
+             {
+                 foreach(var el in arbre.Parent.Valeur)
+                 {
+                    Console.WriteLine(this.PourcentageIndividus(y, arbre.Valeur)*100+"%");
+                    return;
+                 }
+                 Console.WriteLine("Fin arbre null");
+             }
+
+            if (arbre != null)
+            {
+                int gauche_droite = 0;
+                if (arbre.FilsGauche != null)
+                {
+                    critere = arbre.FilsGauche.Variable;
+                    valcritere = arbre.FilsGauche.VariableValeur;
+                    if (valeur[critere] <= valcritere)
+                        InsertionIndivius(arbre.FilsGauche, valeur);
+                    else if (arbre.FilsDroit != null)
+                        InsertionIndivius(arbre.FilsDroit, valeur);
+                }
+                else if (arbre.FilsDroit != null)
+                {
+                    critere = arbre.FilsDroit.Variable;
+                    valcritere = arbre.FilsDroit.VariableValeur;
+                    if (valeur[critere] > valcritere)
+                        InsertionIndivius(arbre.FilsDroit, valeur);
+                    else if (arbre.FilsGauche != null)
+                        InsertionIndivius(arbre.FilsGauche, valeur);
+                }
+                if (valeur[critere] > valcritere)
+                    gauche_droite = 1;
+
+                switch (critere)
+                {
+                    case 1:
+                        if (gauche_droite == 0)
+                            Console.WriteLine("Critère x1 : " + valeur[1] + " " + "inférieur ou egal à : " + valcritere);
+                        else
+                            Console.WriteLine("Critère x1 : " + valeur[1] + " " + "Supérieur à : " + valcritere);
+                        break;
+                    case 2:
+                        if (gauche_droite == 0)
+                            Console.WriteLine("Critère x2 : " + valeur[2] + " " + "inférieur ou egal à : " + valcritere);
+                        else
+                            Console.WriteLine("Critère x2 : " + valeur[2] + " " + "Supérieur à : " + valcritere);
+                        break;
+                    case 3:
+                        if (gauche_droite == 0)
+                            Console.WriteLine("Critère x3 : " + valeur[3] + " " + "inférieur ou egal à : " + valcritere);
+                        else
+                            Console.WriteLine("Critère x3 : " + valeur[3] + " " + "Supérieur à : " + valcritere);
+                        break;
+                    case 4:
+                        if (gauche_droite == 0)
+                            Console.WriteLine("Critère x4 : " + valeur[4] + " " + "inférieur ou egal à : " + valcritere);
+                        else
+                            Console.WriteLine("Critère x4 : " + valeur[4] + " " + "Supérieur à : " + valcritere);
+                        break;
+
+                }
+
+                // Console.WriteLine(critere + " " + valcritere);
+            }
+
+        }
 
         static void SaisitsUtilisateurArbre(ref int Y, ref int seuil1, ref int seuil2, ref int min,
         ref int tailleMax)
@@ -294,7 +389,7 @@ namespace Projet1
 
             do
             {
-                Console.Write("Saisissez le nombre minimal d'invidivu par échantillon ");
+                Console.Write("Saisissez le nombre minimal d'invidivu par échantillon en % ");
                 saisie = int.TryParse(Console.ReadLine(), out min);
             } while (saisie == false || min <= 0 || min > 100);
 
@@ -308,7 +403,7 @@ namespace Projet1
         static void AffichageTableau(double[] tableau)
         {
             for (int i = 0; i < tableau.Length; i++)
-                Console.WriteLine(" Valeur : " + tableau[i]);
+                Console.WriteLine("i : "+i+" Valeur : " + tableau[i]);
             Console.WriteLine("Fin");
         }
 
@@ -351,15 +446,14 @@ namespace Projet1
         {
             double[] temp = val;
             TriABulleV2(temp);
-
             double res = 0;
             int n = temp.Length;
             if (n % 2 == 0)
             {
-                res = (temp[n / 2] + temp[(n / 2) + 1]) / 2;
+                res = (double)(temp[(n - 1) / 2] + temp[((n - 1) / 2) + 1]) / 2;
             }
             else
-                res = temp[(n + 1) / 2];
+                res = temp[((n - 1) + 1) / 2];
             return res;
         }
 
@@ -397,14 +491,16 @@ namespace Projet1
         {
             double res = -1;
             int n = val.Length;
+            //AffichageTableau(val);
             // TODO
             //faire test n<=2 et val identique !
             double mediane = Mediane(val);
             double max = Maximum(val);
+            //AffichageTableau(val);
             if (mediane == max)
                 res = SecondMaximum(val);
             else
-                res = max;
+                res = mediane;
             return res;
         }
 
@@ -418,6 +514,32 @@ namespace Projet1
 
             }
             return feuille;
+        }
+
+        public void AfficherFeuille(Sommet racine)
+        {
+            if (racine == null)
+                return;
+            else if (EstFeuille(racine))
+            {
+                Console.WriteLine("Précision feuille : " + this.PourcentageIndividus(y, racine.Valeur)*100+"%"); // précision + nb individus + chemin
+                Console.WriteLine("Nombre d'individus : " + racine.Valeur.Count);
+            }
+            else
+            {
+                AfficherFeuille(racine.FilsGauche);
+                AfficherFeuille(racine.FilsDroit);
+            }
+        }
+
+        public int LargeurArbre(Sommet racine)
+        {
+            if (racine == null)
+                return 0;
+            else if (racine.FilsGauche == null && racine.FilsDroit == null)
+                return 1;
+            else
+                return LargeurArbre(racine.FilsGauche) + LargeurArbre(racine.FilsDroit);
         }
 
         public int Max(int a, int b)
@@ -450,6 +572,15 @@ namespace Projet1
 
         }
 
+        public void AffichageArbre(Sommet arbre, int count)
+        {
+            int largeur = LargeurArbre(racine);
+            for (int i = 0; i < largeur / 2; i++)
+                Console.Write(" ");
+            Console.WriteLine("Noeud : "+ count);
+            count++;
+        }
+
         //Exo3
         public void AffichageArborescence(Sommet arbre, int nbDecalage)
         {
@@ -470,7 +601,13 @@ namespace Projet1
                 if (!EstFeuille(arbre))
                 {
                     nbDecalage++;
+                    Console.WriteLine("Fils gauche : ");
+                    Console.WriteLine("Précision : "+PourcentageIndividus(this.y, arbre.FilsGauche.Valeur)*100+"%");
+                    Console.WriteLine("Nombre d'individus : "+arbre.FilsGauche.Valeur.Count);
                     AffichageArborescence(arbre.FilsGauche, nbDecalage);
+                    Console.WriteLine("Fils droit : ");
+                    Console.WriteLine("Précision : " + PourcentageIndividus(this.y, arbre.FilsDroit.Valeur) * 100+"%");
+                    Console.WriteLine("Nombre d'individus : " + arbre.FilsDroit.Valeur.Count);
                     AffichageArborescence(arbre.FilsDroit, nbDecalage);
                 }
             }
@@ -479,54 +616,6 @@ namespace Projet1
                 Console.WriteLine("|-X");
             }
 
-        }
-        /*
-        //Rechercher un element
-        public Sommet RechercherValeur(Sommet arbre, int valeur)
-        {
-            if (arbre == null)
-            {
-                return null;
-            }
-            //compare to
-            if (arbre.Valeur == valeur)
-            {
-                return arbre;
-            }
-            else
-            {
-                //compare to
-                if (valeur < arbre.Valeur)
-                {
-                    return RechercherValeur(arbre.FilsGauche, valeur);
-                }
-                else // valeur > arbre->valeur
-                {
-                    return RechercherValeur(arbre.FilsDroit, valeur);
-                }
-            }
-        }*/
-        //Valeur minimale dans l'arbre
-        public Sommet RechercherValeurMinimale(Sommet arbre)
-        {
-            if (arbre == null)
-            {
-                return null;
-            }
-            if (arbre.FilsGauche == null)
-                return arbre;
-            return RechercherValeurMinimale(arbre.FilsGauche);
-        }
-        //Valeur minimale dans l'arbre
-        public Sommet RechercherValeurMaximale(Sommet arbre)
-        {
-            if (arbre == null)
-            {
-                return null;
-            }
-            if (arbre.FilsDroit == null)
-                return arbre;
-            return RechercherValeurMaximale(arbre.FilsDroit);
         }
     }
 }
