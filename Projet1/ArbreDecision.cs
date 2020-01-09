@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projet1
 {
@@ -23,25 +17,88 @@ namespace Projet1
         {
             this.racine = racine;
         }
-        public ArbreDecision(double[,] echantillon,double[]x1,double[]x2,double[]x3,double[]x4)
+        public ArbreDecision(double[,] echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
         {
-            this.racine = new Sommet(echantillon,null,null,null);
+            this.racine = new Sommet(echantillon, 0,null, null, null);
             SaisitsUtilisateurArbre(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
             double mediane_x1 = MedianeCorrigee(x1);
             double mediane_x2 = MedianeCorrigee(x2);
             double mediane_x3 = MedianeCorrigee(x3);
             double mediane_x4 = MedianeCorrigee(x4);
-            CreationArbre(racine, echantillon,mediane_x1,mediane_x2,mediane_x3,mediane_x4);
+            CreationArbre(racine, echantillon, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
         }
-        
+
         public Sommet Racine
         {
             get { return racine; }
             set { racine = value; }
         }
 
+
+        public void InsertionIndivius(Sommet arbre,double[] valeur, double[] x1, double [] x2, double []x3, double[] x4)
+        {
+            double mediane_x1 = MedianeCorrigee(x1);
+            double mediane_x2 = MedianeCorrigee(x2);
+            double mediane_x3 = MedianeCorrigee(x3);
+            double mediane_x4 = MedianeCorrigee(x4);
+            int critere = 0;
+            if (arbre.FilsGauche != null)
+                critere = arbre.FilsGauche.Variable;
+            else if (arbre.FilsDroit != null)
+                critere = arbre.FilsDroit.Variable;
+
+            if (critere == 1)
+            {
+                if (valeur[critere] <= mediane_x1)
+                {
+                    return; // gauche
+                }
+                else
+                {
+                    return; // droite
+                }
+            }
+            else if (critere == 2)
+            {
+                if (valeur[critere] <= mediane_x2)
+                {
+                    return; // gauche
+                }
+                else
+                {
+                    return; // droite
+                }
+            }
+
+            else if (critere == 3)
+            {
+                if (valeur[critere] <= mediane_x3)
+                {
+                    return; // gauche
+                }
+                else
+                {
+                    return; // droite
+                }
+            }
+
+            else if (critere == 4)
+            {
+                if (valeur[critere] <= mediane_x4)
+                {
+                    return; // gauche
+                }
+                else
+                {
+                    return; // droite
+                }
+            }
+            else
+                return; //FIN
+        }
+
         //Exo6
-        private void CreationArbre(Sommet arbre, double[,] val,double mediane_x1,double mediane_x2,double mediane_x3, double mediane_x4)
+        private void CreationArbre(Sommet arbre, double[,] val, double mediane_x1, double mediane_x2, double mediane_x3, double mediane_x4)
         {
             if (arbre == null)
             {
@@ -50,13 +107,13 @@ namespace Projet1
             }
             else
             {
-                double pourcentage = PourcentageIndivius(y, val)*100;
-                if (tailleMax < HauteurArbre(racine) && val.GetLength(0) > min && ( pourcentage > seuil1 && pourcentage < seuil2 )) // test ok
+                double pourcentage = PourcentageIndivius(y, val) * 100;
+                if (tailleMax < HauteurArbre(racine) && val.GetLength(0) > min && (pourcentage > seuil1 && pourcentage < seuil2)) // test ok
                 {
                     // choix du XI
                     int x1_nb1 = DivisionVariableXi(val, 1, mediane_x1, false);
                     int x1_nb2 = DivisionVariableXi(val, 1, mediane_x1, true);
-                    int a = Math.Abs( x1_nb1 - x1_nb2);
+                    int a = Math.Abs(x1_nb1 - x1_nb2);
 
                     int x2_nb1 = DivisionVariableXi(val, 2, mediane_x2, false);
                     int x2_nb2 = DivisionVariableXi(val, 2, mediane_x2, true);
@@ -71,7 +128,7 @@ namespace Projet1
                     int d = Math.Abs(x4_nb1 - x4_nb2);
 
                     //meilleur rapport gauche / droite
-                    int max = MeilleureDivision(a,b,c,d);
+                    int max = MeilleureDivision(a, b, c, d);
 
                     int tailleG = 0;
                     int tailleD = 0;
@@ -95,7 +152,7 @@ namespace Projet1
                         tailleD = x3_nb2;
                         mediane = mediane_x3;
                     }
-                    if (max == 1)
+                    else if (max == 4)
                     {
                         tailleG = x4_nb1;
                         tailleD = x4_nb2;
@@ -107,18 +164,18 @@ namespace Projet1
                     double[,] gauche = NouveauEchantillon(val, max, mediane, false, tailleG);
                     double[,] droite = NouveauEchantillon(val, max, mediane, true, tailleD);
 
-                    arbre.FilsGauche = new Sommet(gauche, null, null, arbre);
-                    arbre.FilsDroit = new Sommet(droite, null, null, arbre);
+                    arbre.FilsGauche = new Sommet(gauche, max,null, null, arbre);
+                    arbre.FilsDroit = new Sommet(droite, max,null, null, arbre);
 
                     CreationArbre(arbre.FilsGauche, gauche, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
                     CreationArbre(arbre.FilsDroit, droite, mediane_x1, mediane_x2, mediane_x3, mediane_x4);
-                }                    
+                }
             }
         }
 
-        public double [,] NouveauEchantillon(double[,] individus, int xi, double mediane_xi, bool gauche_droite,int taille)
+        public double[,] NouveauEchantillon(double[,] individus, int xi, double mediane_xi, bool gauche_droite, int taille)
         {
-            double[,] tab = new double[taille,5];
+            double[,] tab = new double[taille, 5];
             int j = 0;
             for (int i = 0; i < individus.GetLength(0); i++)
             {
@@ -126,7 +183,7 @@ namespace Projet1
                 {
                     if (individus[i, xi] <= mediane_xi)
                     {
-                        for (int z = 0; z < 5;z++)
+                        for (int z = 0; z < 5; z++)
                         {
                             tab[j, z] = individus[i, z];
                         }
@@ -148,11 +205,11 @@ namespace Projet1
             return tab;
         }
 
-        public int MeilleureDivision(int a,int b,int c,int d)
+        public int MeilleureDivision(int a, int b, int c, int d)
         {
             int res = -1;
-            int temp= Math.Max(a,b);
-            int temp2 = Math.Max(c,d);
+            int temp = Math.Max(a, b);
+            int temp2 = Math.Max(c, d);
             int max = Math.Max(temp, temp2);
             if (max == a)
                 res = 1;
@@ -167,10 +224,10 @@ namespace Projet1
         }
 
         //Renvoie le nombre d'individu à gauche ou a droite selon une variable xi
-        public int DivisionVariableXi(double [,] individus, int xi,double mediane_xi, bool gauche_droite) //faux = gauche , vrai = droite // xi : 1 2 3 ou 4
+        public int DivisionVariableXi(double[,] individus, int xi, double mediane_xi, bool gauche_droite) //faux = gauche , vrai = droite // xi : 1 2 3 ou 4
         {
             int res = 0;
-            for(int i = 0;i<individus.GetLength(0);i++)
+            for (int i = 0; i < individus.GetLength(0); i++)
             {
                 if (!gauche_droite)
                 {
@@ -186,14 +243,14 @@ namespace Projet1
             return res;
         }
 
-        public double PourcentageIndivius(int parY, double [,] individus)
+        public double PourcentageIndivius(int parY, double[,] individus)
         {
             double res = 0;
             int compteur = 0;
             int total = individus.GetLength(0);
-            for (int i = 0; i <individus.GetLength(0);i++)
+            for (int i = 0; i < individus.GetLength(0); i++)
             {
-                if (individus[i,0] == parY)
+                if (individus[i, 0] == parY)
                     compteur++;
             }
             res = compteur / total;

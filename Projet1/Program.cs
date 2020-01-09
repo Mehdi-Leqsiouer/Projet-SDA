@@ -20,7 +20,7 @@ namespace Projet1
 
         }
 
-        static void ReadFile(String path,double[,] echantillon,double[]x1, double[]x2,double[]x3,double[]x4)
+        static void ReadFile(String path, double[,] echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
         {
             int counter = 0;
             string line;
@@ -59,9 +59,9 @@ namespace Projet1
 
         static void AffichageTableau2D(double[,] tableau)
         {
-            for(int i = 0; i < tableau.GetLength(0);i++)
+            for (int i = 0; i < tableau.GetLength(0); i++)
             {
-                for(int j = 0; j <tableau.GetLength(1);j++)
+                for (int j = 0; j < tableau.GetLength(1); j++)
                 {
                     Console.Write(tableau[i, j] + " ");
                 }
@@ -108,18 +108,18 @@ namespace Projet1
             double[] x3 = new double[120];
             double[] x4 = new double[120];
 
-            ReadFile("iris.txt", echantillon, x1, x2, x3,x4);
-            ArbreDecision arbre = new ArbreDecision(echantillon, x1,x2,x3,x4);
+            ReadFile("iris.txt", echantillon, x1, x2, x3, x4);
+            ArbreDecision arbre = new ArbreDecision(echantillon, x1, x2, x3, x4);
             //AffichageTableau2D(echantillon);
             double x1N = -1;
             double x2N = -1;
             double x3N = -1;
             double x4N = -1;
             SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
+            double[] vals = {0,x1N,x2N,x3N,x4N };
+            arbre.InsertionIndivius(arbre.Racine,vals, x1, x2, x3, x4);
+
             Console.ReadKey();
-
-
-            
         }
     }
 }
