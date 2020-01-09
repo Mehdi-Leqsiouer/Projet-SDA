@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -7,20 +8,20 @@ namespace Projet1
     class Program
     {
 
-        static void RemplirTableau(string[] soustab, double[,] echantillon, double[] x1, double[] x2, double[] x3, double[] x4, int counter)
+        static double[] RemplirTableau(string[] soustab, List<double[]> echantillon, double[] x1, double[] x2, double[] x3, double[] x4, int counter)
         {
-
+            double[] newsoustab = new double[5];
             for (int i = 0; i < soustab.Length; i++)
-                echantillon[counter - 1, i] = Double.Parse(soustab[i], CultureInfo.InvariantCulture);
+                newsoustab[i] = Double.Parse(soustab[i], CultureInfo.InvariantCulture);
 
-            x1[counter - 1] = echantillon[counter - 1, 1];
-            x2[counter - 1] = echantillon[counter - 1, 2];
-            x3[counter - 1] = echantillon[counter - 1, 3];
-            x4[counter - 1] = echantillon[counter - 1, 4];
-
+            x1[counter - 1] = newsoustab[ 1];
+            x2[counter - 1] = newsoustab[ 2];
+            x3[counter - 1] = newsoustab[ 3];
+            x4[counter - 1] = newsoustab[ 4];
+            return newsoustab;
         }
 
-        static void ReadFile(String path, double[,] echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
+        static void ReadFile(String path, List<double[]> echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
         {
             int counter = 0;
             string line;
@@ -38,7 +39,10 @@ namespace Projet1
                     //Console.WriteLine(line);
                     string[] soustab = line.Split(' ');
                     if (counter > 0)
-                        RemplirTableau(soustab, echantillon, x1, x2, x3, x4, counter);
+                    {
+                        double [] newsoustab = RemplirTableau(soustab, echantillon, x1, x2, x3, x4, counter);
+                        echantillon.Add(newsoustab);
+                    }
                     counter++;
                 }
 
@@ -102,7 +106,7 @@ namespace Projet1
 
         static void Main(string[] args)
         {
-            double[,] echantillon = new double[120, 5];
+            List<double[]> echantillon = new List<double[]>();
             double[] x1 = new double[120];
             double[] x2 = new double[120];
             double[] x3 = new double[120];
@@ -115,9 +119,10 @@ namespace Projet1
             double x2N = -1;
             double x3N = -1;
             double x4N = -1;
-            SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
-            double[] vals = {0,x1N,x2N,x3N,x4N };
-            arbre.InsertionIndivius(arbre.Racine,vals, x1, x2, x3, x4);
+            arbre.AffichageArborescence(arbre.Racine, 1);
+            //SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
+            //double[] vals = {0,x1N,x2N,x3N,x4N };
+            //arbre.InsertionIndivius(arbre.Racine,vals, x1, x2, x3, x4);
 
             Console.ReadKey();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Projet1
 {
@@ -11,16 +12,18 @@ namespace Projet1
         int seuil2;
         int min;
         int tailleMax;
+        int tailledepart;
         //Constructeurs
 
         public ArbreDecision(Sommet racine)
         {
             this.racine = racine;
         }
-        public ArbreDecision(double[,] echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
+        public ArbreDecision(List<double[]> echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
         {
             this.racine = new Sommet(echantillon, 0,null, null, null);
             SaisitsUtilisateurArbre(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
+            this.tailledepart = echantillon.Count;
             double mediane_x1 = MedianeCorrigee(x1);
             double mediane_x2 = MedianeCorrigee(x2);
             double mediane_x3 = MedianeCorrigee(x3);
@@ -42,6 +45,9 @@ namespace Projet1
             double mediane_x3 = MedianeCorrigee(x3);
             double mediane_x4 = MedianeCorrigee(x4);
             int critere = 0;
+
+            arbre.AjoutValeur(valeur);
+
             if (arbre.FilsGauche != null)
                 critere = arbre.FilsGauche.Variable;
             else if (arbre.FilsDroit != null)
@@ -51,22 +57,22 @@ namespace Projet1
             {
                 if (valeur[critere] <= mediane_x1)
                 {
-                    return; // gauche
+                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
                 }
                 else
                 {
-                    return; // droite
+                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
                 }
             }
             else if (critere == 2)
             {
                 if (valeur[critere] <= mediane_x2)
                 {
-                    return; // gauche
+                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
                 }
                 else
                 {
-                    return; // droite
+                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
                 }
             }
 
@@ -74,11 +80,11 @@ namespace Projet1
             {
                 if (valeur[critere] <= mediane_x3)
                 {
-                    return; // gauche
+                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
                 }
                 else
                 {
-                    return; // droite
+                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
                 }
             }
 
@@ -86,11 +92,11 @@ namespace Projet1
             {
                 if (valeur[critere] <= mediane_x4)
                 {
-                    return; // gauche
+                    InsertionIndivius(arbre.FilsGauche, valeur, x1, x2, x3, x4);
                 }
                 else
                 {
-                    return; // droite
+                    InsertionIndivius(arbre.FilsDroit, valeur, x1, x2, x3, x4);
                 }
             }
             else
@@ -98,7 +104,7 @@ namespace Projet1
         }
 
         //Exo6
-        private void CreationArbre(Sommet arbre, double[,] val, double mediane_x1, double mediane_x2, double mediane_x3, double mediane_x4)
+        private void CreationArbre(Sommet arbre, List<double[]> val, double mediane_x1, double mediane_x2, double mediane_x3, double mediane_x4)
         {
             if (arbre == null)
             {
@@ -108,7 +114,7 @@ namespace Projet1
             else
             {
                 double pourcentage = PourcentageIndivius(y, val) * 100;
-                if (tailleMax < HauteurArbre(racine) && val.GetLength(0) > min && (pourcentage > seuil1 && pourcentage < seuil2)) // test ok
+                if (tailleMax < HauteurArbre(racine) && val.Count > ((min*tailledepart)/100) && (pourcentage > seuil1 && pourcentage < seuil2)) // test ok
                 {
                     // choix du XI
                     int x1_nb1 = DivisionVariableXi(val, 1, mediane_x1, false);
@@ -161,8 +167,8 @@ namespace Projet1
 
 
                     //TODO : diviser la population
-                    double[,] gauche = NouveauEchantillon(val, max, mediane, false, tailleG);
-                    double[,] droite = NouveauEchantillon(val, max, mediane, true, tailleD);
+                    List<double[]> gauche = NouveauEchantillon(val, max, mediane, false, tailleG);
+                    List<double[]> droite = NouveauEchantillon(val, max, mediane, true, tailleD);
 
                     arbre.FilsGauche = new Sommet(gauche, max,null, null, arbre);
                     arbre.FilsDroit = new Sommet(droite, max,null, null, arbre);
@@ -173,36 +179,38 @@ namespace Projet1
             }
         }
 
-        public double[,] NouveauEchantillon(double[,] individus, int xi, double mediane_xi, bool gauche_droite, int taille)
+        public List<double[]> NouveauEchantillon(List<double[]> individus, int xi, double mediane_xi, bool gauche_droite, int taille)
         {
-            double[,] tab = new double[taille, 5];
+            double[] tab = new double[5];
+            List<double[]> res = new List<double[]>();
             int j = 0;
-            for (int i = 0; i < individus.GetLength(0); i++)
+            foreach (var el in individus)
             {
                 if (!gauche_droite)
                 {
-                    if (individus[i, xi] <= mediane_xi)
+                    if (el[xi] <= mediane_xi)
                     {
                         for (int z = 0; z < 5; z++)
                         {
-                            tab[j, z] = individus[i, z];
+                            tab[z] = el[z];
                         }
                         j++;
                     }
                 }
                 else
                 {
-                    if (individus[i, xi] > mediane_xi)
+                    if (el[xi] > mediane_xi)
                     {
                         for (int z = 0; z < 5; z++)
                         {
-                            tab[j, z] = individus[i, z];
+                            tab[z] = el[z];
                         }
                         j++;
                     }
                 }
             }
-            return tab;
+            res.Add(tab);
+            return res;
         }
 
         public int MeilleureDivision(int a, int b, int c, int d)
@@ -224,33 +232,33 @@ namespace Projet1
         }
 
         //Renvoie le nombre d'individu à gauche ou a droite selon une variable xi
-        public int DivisionVariableXi(double[,] individus, int xi, double mediane_xi, bool gauche_droite) //faux = gauche , vrai = droite // xi : 1 2 3 ou 4
+        public int DivisionVariableXi(List<double[]> individus, int xi, double mediane_xi, bool gauche_droite) //faux = gauche , vrai = droite // xi : 1 2 3 ou 4
         {
             int res = 0;
-            for (int i = 0; i < individus.GetLength(0); i++)
+            foreach (var el in individus)
             {
                 if (!gauche_droite)
                 {
-                    if (individus[i, xi] <= mediane_xi)
+                    if (el[xi] <= mediane_xi)
                         res++;
                 }
                 else
                 {
-                    if (individus[i, xi] > mediane_xi)
+                    if (el[xi] > mediane_xi)
                         res++;
                 }
             }
             return res;
         }
 
-        public double PourcentageIndivius(int parY, double[,] individus)
+        public double PourcentageIndivius(int parY, List<double[]> individus)
         {
             double res = 0;
             int compteur = 0;
-            int total = individus.GetLength(0);
-            for (int i = 0; i < individus.GetLength(0); i++)
+            int total = individus.Count;
+            foreach (var el in individus)
             {
-                if (individus[i, 0] == parY)
+                if (el[0] == parY)
                     compteur++;
             }
             res = compteur / total;
@@ -453,11 +461,11 @@ namespace Projet1
             {
                 if (nbDecalage != 0)
                 {
-                    Console.WriteLine("|-" + arbre.Valeur);
+                    Console.WriteLine("|-" + arbre.ToString());
                 }
                 else
                 {
-                    Console.WriteLine(arbre.Valeur);
+                    Console.WriteLine(arbre.ToString());
                 }
                 if (!EstFeuille(arbre))
                 {

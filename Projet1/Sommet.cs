@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Projet1
 {
@@ -6,13 +7,13 @@ namespace Projet1
     {
         //Attributs
         //Attributs
-        private double[,] valeur;
+        private List<double[]> valeur;
         private int variableDivisee;
         Sommet filsGauche;
         Sommet filsDroit;
         Sommet parent;
         //Constructeur
-        public Sommet(double[,] valeur, int variable,Sommet filsGauche, Sommet filsDroit, Sommet parent)
+        public Sommet(List<double[]> valeur, int variable,Sommet filsGauche, Sommet filsDroit, Sommet parent)
         {
             this.valeur = valeur;
             this.variableDivisee = variable;
@@ -23,12 +24,26 @@ namespace Projet1
 
         public void AjoutValeur(double [] valeurs)
         {
-           // int n = valeur.GetLength(0);
-            //for(int i = 0; i )
+            valeur.Add(valeurs);
+        }
+
+        public override string ToString()
+        {
+            string msg = " ";
+            foreach(var el in valeur)
+            {
+                for (int i = 0; i < el.Length; i ++)
+                {
+                    msg += " "+el[i];
+                }
+                msg += "\n";
+            }
+
+            return msg;
         }
 
         //Propriétés 
-        public double[,] Valeur
+        public List<double[]> Valeur
         {
             get { return valeur; }
             set { valeur = value; }
