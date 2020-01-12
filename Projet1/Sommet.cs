@@ -14,7 +14,7 @@ namespace Projet1
         Sommet filsDroit;
         Sommet parent;
         //Constructeur
-        public Sommet(List<double[]> valeur, int variable, double  variableValeur, Sommet filsGauche, Sommet filsDroit, Sommet parent)
+        public Sommet(List<double[]> valeur, int variable, double variableValeur, Sommet filsGauche, Sommet filsDroit, Sommet parent)
         {
             this.valeur = valeur;
             this.variableDivisee = variable;

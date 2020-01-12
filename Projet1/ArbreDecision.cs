@@ -18,7 +18,7 @@ namespace Projet1
 
         public ArbreDecision(List<double[]> echantillon)
         {
-            this.racine = new Sommet(echantillon, 0, 0,null, null, null);
+            this.racine = new Sommet(echantillon, 0, 0, null, null, null);
             SaisitsUtilisateurArbre(ref y, ref seuil1, ref seuil2, ref min, ref tailleMax);
 
             this.tailledepart = echantillon.Count;
@@ -33,7 +33,7 @@ namespace Projet1
         }
 
         //cette fonction permet de remplir le tableau, elle a en parametre des tableau de double et renvoi rien
-        public void RemplirTableau(double[] soustab, double[] x1, double[] x2, double[] x3, double[] x4,int i)
+        public void RemplirTableau(double[] soustab, double[] x1, double[] x2, double[] x3, double[] x4, int i)
         {
             x1[i] = soustab[1];
             x2[i] = soustab[2];
@@ -47,7 +47,7 @@ namespace Projet1
         {
             if (arbre == null)
             {
-                
+
                 return;
                 //AffichagePrefixe(arbre);
             }
@@ -55,7 +55,7 @@ namespace Projet1
             else
             {
                 double pourcentage = PourcentageIndividus(y, val) * 100;
-                
+
                 if (tailleMax > HauteurArbre(racine) && val.Count > ((min * tailledepart) / 100) && (pourcentage > seuil1 && pourcentage < seuil2)) // test ok
                 {
 
@@ -65,9 +65,9 @@ namespace Projet1
                     double[] x4 = new double[val.Count];
 
                     int i = 0;
-                    foreach(var el in val)
+                    foreach (var el in val)
                     {
-                        RemplirTableau(el, x1, x2, x3, x4,i);
+                        RemplirTableau(el, x1, x2, x3, x4, i);
                         i++;
                     }
 
@@ -75,7 +75,7 @@ namespace Projet1
                     double mediane_x2 = MedianeCorrigee(x2);
                     double mediane_x3 = MedianeCorrigee(x3);
                     double mediane_x4 = MedianeCorrigee(x4);
-                    
+
                     List<double[]> gauche1 = NouveauEchantillon(val, 1, mediane_x1, false);
                     List<double[]> droite1 = NouveauEchantillon(val, 1, mediane_x1, true);
 
@@ -88,20 +88,20 @@ namespace Projet1
                     List<double[]> gauche4 = NouveauEchantillon(val, 4, mediane_x4, false);
                     List<double[]> droite4 = NouveauEchantillon(val, 4, mediane_x4, true);
 
-                    double prec1_1 = PourcentageIndividus(y, gauche1)*100;
-                    double prec1_2 = PourcentageIndividus(y, droite1)*100;
+                    double prec1_1 = PourcentageIndividus(y, gauche1) * 100;
+                    double prec1_2 = PourcentageIndividus(y, droite1) * 100;
                     int a = Math.Max((int)prec1_1, (int)prec1_2);
 
-                    double prec2_1 = PourcentageIndividus(y, gauche2)*100;
-                    double prec2_2 = PourcentageIndividus(y, droite2)*100;
+                    double prec2_1 = PourcentageIndividus(y, gauche2) * 100;
+                    double prec2_2 = PourcentageIndividus(y, droite2) * 100;
                     int b = Math.Max((int)prec2_1, (int)prec2_2);
 
-                    double prec3_1 = PourcentageIndividus(y, gauche3)*100;
-                    double prec3_2 = PourcentageIndividus(y, droite3)*100;
+                    double prec3_1 = PourcentageIndividus(y, gauche3) * 100;
+                    double prec3_2 = PourcentageIndividus(y, droite3) * 100;
                     int c = Math.Max((int)prec3_1, (int)prec3_2);
 
-                    double prec4_1 = PourcentageIndividus(y, gauche4)*100;
-                    double prec4_2 = PourcentageIndividus(y, droite4)*100;
+                    double prec4_1 = PourcentageIndividus(y, gauche4) * 100;
+                    double prec4_2 = PourcentageIndividus(y, droite4) * 100;
                     int d = Math.Max((int)prec4_1, (int)prec4_2);
 
                     if (mediane_x1 == -1)
@@ -140,7 +140,7 @@ namespace Projet1
 
                     CreationArbre(arbre.FilsGauche, gauche);
                     CreationArbre(arbre.FilsDroit, droite);
-                    
+
                 }
             }
         }
@@ -149,11 +149,11 @@ namespace Projet1
         {
             Console.WriteLine("----- Début sommet ------");
             Console.WriteLine("Taille : " + liste.Count);
-            foreach(var el in liste)
+            foreach (var el in liste)
             {
-                for (int i = 0; i < el.Length;i++)
+                for (int i = 0; i < el.Length; i++)
                 {
-                    Console.Write((double)el[i] + " " );
+                    Console.Write((double)el[i] + " ");
                 }
                 Console.WriteLine();
             }
@@ -162,7 +162,7 @@ namespace Projet1
         //cette fonction permet de recuperer la nouvelle liste, elle a en parametre une liste de double, un entier, double et un bool et renvoi une liste de double
         public List<double[]> NouveauEchantillon(List<double[]> individus, int xi, double mediane_xi, bool gauche_droite)
         {
-            
+
             //AffichageListe(individus);
             List<double[]> res = new List<double[]>();
             if (individus == null)
@@ -242,21 +242,21 @@ namespace Projet1
             double valcritere = 0;
             //Console.WriteLine(arbre.Variable + " " + arbre.VariableValeur);
 
-             if (arbre.FilsGauche == null && arbre.FilsDroit == null)
-             {
-                 foreach(var el in arbre.Parent.Valeur)
-                 {
+            if (arbre.FilsGauche == null && arbre.FilsDroit == null)
+            {
+                foreach (var el in arbre.Parent.Valeur)
+                {
                     Sommet temp = new Sommet(arbre.Valeur, arbre.Variable, arbre.VariableValeur, arbre.FilsGauche, arbre.FilsDroit, arbre.Parent);
                     Console.WriteLine("Chemin à l'envers : ");
-                    CheminALenvers(temp);                    
-                    Console.WriteLine("Précision pour que cette individu soit de type Y = "+y+" : "+Math.Round(this.PourcentageIndividus(y, arbre.Valeur),4)*100+"%");
+                    CheminALenvers(temp);
+                    Console.WriteLine("Précision pour que cette individu soit de type Y = " + y + " : " + Math.Round(this.PourcentageIndividus(y, arbre.Valeur), 4) * 100 + "%");
                     return;
                 }
-             }
+            }
 
             if (arbre != null)
             {
-               // int gauche_droite = 0;
+                // int gauche_droite = 0;
                 if (arbre.FilsGauche != null)
                 {
                     critere = arbre.FilsGauche.Variable;
@@ -319,13 +319,13 @@ namespace Projet1
         static void AffichageTableau(double[] tableau)
         {
             for (int i = 0; i < tableau.Length; i++)
-                Console.WriteLine("i : "+(i+1)+" Valeur : " + tableau[i]);
+                Console.WriteLine("i : " + (i + 1) + " Valeur : " + tableau[i]);
             Console.WriteLine("Fin");
         }
         //cette fonction permet de trier le tableau, elle a en parametre un tableau de double et renvoi rien
         static void TriABulleV2(double[] tableau)
         {
-            int  j;
+            int j;
             double inter;
             int cptr = 0;
             bool var = false;
@@ -362,12 +362,12 @@ namespace Projet1
         {
             double[] temp = val;
             TriABulleV2(temp);
-           // AffichageTableau(temp);
+            // AffichageTableau(temp);
             double res = 0;
             int n = temp.Length;
             if (n % 2 == 0)
             {
-                res = (double)(temp[(n-1) / 2] + temp[((n-1) / 2) + 1]) / 2;
+                res = (double)(temp[(n - 1) / 2] + temp[((n - 1) / 2) + 1]) / 2;
             }
             else
                 res = temp[((n - 1) + 1) / 2];
@@ -478,7 +478,7 @@ namespace Projet1
             {
                 i++;
                 Console.WriteLine("Feuille n°" + i);
-                Console.WriteLine("Précision feuille : " + Math.Round(this.PourcentageIndividus(y, racine.Valeur),4)*100+"%"); // précision + nb individus + chemin
+                Console.WriteLine("Précision feuille : " + Math.Round(this.PourcentageIndividus(y, racine.Valeur), 4) * 100 + "%"); // précision + nb individus + chemin
                 Console.WriteLine("Nombre d'individus : " + racine.Valeur.Count);
                 Console.WriteLine("Chemin à l'envers : ");
                 CheminALenvers(racine);
@@ -486,8 +486,8 @@ namespace Projet1
             }
             else
             {
-                AfficherFeuille(racine.FilsGauche,i);
-                AfficherFeuille(racine.FilsDroit,i);
+                AfficherFeuille(racine.FilsGauche, i);
+                AfficherFeuille(racine.FilsDroit, i);
             }
         }
         //cette fonction permet d'obtenir la largeur de l'arbre, elle a en parametre une variable de type sommet et renvoi un entier
@@ -509,6 +509,7 @@ namespace Projet1
                 return a;
         }
 
+        //cette fonction renvoie la hauteur de l'arbre (ou profondeur) en entier : elle reçoit un sommet qui est l'arbre
         public int HauteurArbre(Sommet parent)
         {
             if (parent == null)
@@ -524,7 +525,7 @@ namespace Projet1
             int largeur = LargeurArbre(racine);
             for (int i = 0; i < largeur / 2; i++)
                 Console.Write(" ");
-            Console.WriteLine("Noeud : "+ count);
+            Console.WriteLine("Noeud : " + count);
             count++;
         }
 
@@ -536,12 +537,12 @@ namespace Projet1
             {
                 Console.WriteLine();
                 Console.WriteLine("Noeud ");
-                Console.WriteLine("Précision : " + Math.Round(PourcentageIndividus(this.y, arbre.Valeur),4) * 100 + "%");
+                Console.WriteLine("Précision : " + Math.Round(PourcentageIndividus(this.y, arbre.Valeur), 4) * 100 + "%");
                 Console.WriteLine("Nombre d'individus : " + arbre.Valeur.Count);
                 int critere = arbre.Variable;
                 double critereval = arbre.VariableValeur;
 
-                
+
                 string gauche_droite = "Inférieur ou égal";
                 double val = 0;
                 foreach (var el in arbre.Valeur)

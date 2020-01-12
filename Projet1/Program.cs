@@ -7,7 +7,7 @@ namespace Projet1
 {
     class Program
     {
-
+        //cette fonction permet de remplir le tableau, elle a en parametre un tableau de string et renvoi un tableau de double
         static double[] RemplirTableau(string[] soustab)
         {
             double[] newsoustab = new double[5];
@@ -16,7 +16,7 @@ namespace Projet1
 
             return newsoustab;
         }
-
+        //cette fonction permet de lire les fichiers, elle a en parametre un string et une liste et renvoie rien.
         static void ReadFile(String path, List<double[]> echantillon)
         {
             int counter = 0;
@@ -49,14 +49,14 @@ namespace Projet1
                 Console.WriteLine("Erreur à l'ouverture du fichier, chemin erronné");
             //AffichageTableau(x4);
         }
-
+        //cette fonction permet d'afficher le tableau, elle a en parametre un tableau de double et renvoi rien
         static void AffichageTableau(double[] tableau)
         {
             for (int i = 0; i < tableau.Length; i++)
                 Console.WriteLine(" Valeur : " + tableau[i]);
             Console.WriteLine("Fin");
         }
-
+        //cette fonction permet de remplir le tableau, elle a en parametre un tableau de string et renvoi un tableau de double
         static void AffichageTableau2D(double[,] tableau)
         {
             for (int i = 0; i < tableau.GetLength(0); i++)
@@ -69,7 +69,7 @@ namespace Projet1
             }
             Console.WriteLine("Fin");
         }
-
+        //cette fonction demande une saisie a l'utilisateur, elle a en parametre des doubles et renvoi rien
         static void SaisitsUtilisateurIndividu(ref double x1, ref double x2, ref double x3, ref double x4)
         {
             bool saisie = false;
@@ -99,14 +99,14 @@ namespace Projet1
             } while (saisie == false || x4 <= 0);
 
         }
-
+        //cette fonction permet d'afficher la liste, elle a en parametre une liste de double et renvoi rien
         static void AffichageListe(List<double[]> liste)
         {
             foreach (var el in liste)
             {
                 for (int i = 0; i < el.Length; i++)
                 {
-                    Console.Write(el[i] +" ");
+                    Console.Write(el[i] + " ");
                 }
                 Console.WriteLine();
             }
@@ -119,7 +119,7 @@ namespace Projet1
             ReadFile("iris.txt", echantillon);
             ArbreDecision arbre = new ArbreDecision(echantillon);
 
-            
+
 
             double x1N = 6.0;
             double x2N = 2.2;
@@ -128,54 +128,55 @@ namespace Projet1
 
             string lettre = "";
             do
-              {
-                  Console.WriteLine("----- MENU -----");
-                  Console.WriteLine("-----  Entrer 1 : Afficher la hauteur de l'arbre -----");
-                  Console.WriteLine("-----  Entrer 2 : Afficher la largeur de l'arbre -----");
-                  Console.WriteLine("-----  Entrer 3 : Afficher l'arbre sous forme arborescente -----");
-                  Console.WriteLine("-----  Entrer 4 : Afficher les feuilles -----");
-                  Console.WriteLine("-----  Entrer 5 : Prédire la variable Y d'un individu à saisir -----");
-                  Console.WriteLine("-----  Entrer 6 : Créer un nouvel arbre -----");
+            {
+                Console.WriteLine("----- MENU -----");
+                Console.WriteLine("-----  Entrer 1 : Afficher la hauteur de l'arbre -----");
+                Console.WriteLine("-----  Entrer 2 : Afficher la largeur de l'arbre -----");
+                Console.WriteLine("-----  Entrer 3 : Afficher l'arbre sous forme arborescente -----");
+                Console.WriteLine("-----  Entrer 4 : Afficher les feuilles -----");
+                Console.WriteLine("-----  Entrer 5 : Prédire la variable Y d'un individu à saisir -----");
+                Console.WriteLine("-----  Entrer 6 : Créer un nouvel arbre -----");
                 Console.WriteLine("----- Presser Q ou q pour quitter -----");
-                  lettre = Console.ReadLine();
+                lettre = Console.ReadLine();
 
-                  switch (lettre)
-                  {
-                      case "1":
-                          Console.WriteLine("Hauteur : " + arbre.HauteurArbre(arbre.Racine));
+                switch (lettre)
+                {
+                    case "1":
+                        Console.WriteLine("Hauteur : " + arbre.HauteurArbre(arbre.Racine));
                         Console.WriteLine();
                         break;
-                      case "2":
-                          Console.WriteLine("Largeur : " + arbre.LargeurArbre(arbre.Racine));
+                    case "2":
+                        Console.WriteLine("Largeur : " + arbre.LargeurArbre(arbre.Racine));
                         Console.WriteLine();
                         break;
-                      case "3":
-                          Console.WriteLine("Affichage arbre, précisions pour Y = "+arbre.Y);
-                          arbre.AffichageArborescence(arbre.Racine);
-                          Console.WriteLine();
-                          break;
-                      case "4":
-                          arbre.AfficherFeuille(arbre.Racine,0);
+                    case "3":
+                        Console.WriteLine("Affichage arbre, précisions pour Y = " + arbre.Y);
+                        arbre.AffichageArborescence(arbre.Racine);
                         Console.WriteLine();
                         break;
-                      case "5":
-                          SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
-                          double[] vals = {0,x1N,x2N,x3N,x4N };
-                          arbre.InsertionIndivius(arbre.Racine,vals);
-                          Console.WriteLine();
-                          break;
+                    case "4":
+                        arbre.AfficherFeuille(arbre.Racine, 0);
+                        Console.WriteLine();
+                        break;
+                    case "5":
+                        SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
+                        double[] vals = { 0, x1N, x2N, x3N, x4N };
+                        arbre.InsertionIndivius(arbre.Racine, vals);
+                        Console.WriteLine();
+                        break;
                     case "6":
                         arbre = new ArbreDecision(echantillon);
                         break;
-                    case "Q": case "q":
+                    case "Q":
+                    case "q":
                         Console.WriteLine("Fin du programme");
                         break;
                     default:
                         Console.WriteLine("Erreur dans la saisie ! ");
                         break;
-                  }
+                }
 
-              } while (!lettre.Equals("Q") && !lettre.Equals("q"));
+            } while (!lettre.Equals("Q") && !lettre.Equals("q"));
 
             Console.ReadKey();
         }
