@@ -32,7 +32,7 @@ namespace Projet1
             set { racine = value; }
         }
 
-
+        //cette fonction permet de remplir le tableau, elle a en parametre des tableau de double et renvoi rien
         public void RemplirTableau(double[] soustab, double[] x1, double[] x2, double[] x3, double[] x4,int i)
         {
             x1[i] = soustab[1];
@@ -42,6 +42,7 @@ namespace Projet1
         }
 
         //Exo6
+        //cette fonction permet de créer l'arbre, elle a en parametre une variable de type sommet et une liste de double et renvoi rien
         private void CreationArbre(Sommet arbre, List<double[]> val)
         {
             if (arbre == null)
@@ -143,7 +144,7 @@ namespace Projet1
                 }
             }
         }
-
+        //cette fonction permet d'afficher la liste, elle a en parametre une liste de double et renvoi rien
         public void AffichageListe(List<double[]> liste)
         {
             Console.WriteLine("----- Début sommet ------");
@@ -158,7 +159,7 @@ namespace Projet1
             }
             Console.WriteLine("----- Fin sommet ------");
         }
-
+        //cette fonction permet de recuperer la nouvelle liste, elle a en parametre une liste de double, un entier, double et un bool et renvoi une liste de double
         public List<double[]> NouveauEchantillon(List<double[]> individus, int xi, double mediane_xi, bool gauche_droite)
         {
             
@@ -202,7 +203,7 @@ namespace Projet1
             //AffichageListe(res);
             return res;
         }
-        
+        //cette fonction permet de comparer les differentes variables en parametre, elle a en parametre 4 entiers et renvoi un entier
         public int MeilleureDivision(int a, int b, int c, int d)
         {
             int res = -1;
@@ -220,7 +221,7 @@ namespace Projet1
 
             return res;
         }
-
+        //cette fonction permet d'obtenir le pourcentage d'individus, elle a en parametre un entier et une liste de double et renvoi un double
         public double PourcentageIndividus(int parY, List<double[]> individus)
         {
             double res = 0;
@@ -234,7 +235,7 @@ namespace Projet1
             res = (float)compteur / total;
             return res;
         }
-
+        //cette fonction permet de determiner la précision de l'individu selon la variable Y, elle a en parametre une variable de type sommet et un tableau de double  et renvoi rien
         public void InsertionIndivius(Sommet arbre, double[] valeur)
         {
             int critere = 0;
@@ -278,6 +279,7 @@ namespace Projet1
 
         }
 
+        //cette fonction demande la saisie à l'utilisateur, elle a en parametre un tableau de double et renvoi rien
         static void SaisitsUtilisateurArbre(ref int Y, ref int seuil1, ref int seuil2, ref int min,
         ref int tailleMax)
         {
@@ -313,17 +315,17 @@ namespace Projet1
                 saisie = int.TryParse(Console.ReadLine(), out tailleMax);
             } while (saisie == false || tailleMax <= 0);
         }
-
+        //cette fonction permet d'afficher le tableau, elle a en parametre un tableau de double et renvoi rien
         static void AffichageTableau(double[] tableau)
         {
             for (int i = 0; i < tableau.Length; i++)
                 Console.WriteLine("i : "+(i+1)+" Valeur : " + tableau[i]);
             Console.WriteLine("Fin");
         }
-
+        //cette fonction permet de trier le tableau, elle a en parametre un tableau de double et renvoi rien
         static void TriABulleV2(double[] tableau)
         {
-            int i, j;
+            int  j;
             double inter;
             int cptr = 0;
             bool var = false;
@@ -355,7 +357,7 @@ namespace Projet1
             }
         }
 
-
+        //cette fonction permet de calculer la mediane, elle a en parametre un tableau de double et renvoi un double
         static double Mediane(double[] val)
         {
             double[] temp = val;
@@ -372,7 +374,7 @@ namespace Projet1
             //Console.WriteLine(res);
             return res;
         }
-
+        //cette fonction permet d'obtenir la valeur max, elle a en parametre un tableau de double et renvoi un double
         static double Maximum(double[] val)
         {
             double res = 0;
@@ -383,7 +385,7 @@ namespace Projet1
             }
             return res;
         }
-
+        //cette fonction permet d'obtenir la 2e valeur max, elle a en parametre un tableau de double et renvoi un double
         static double SecondMaximum(double[] val)
         {
             double res = 0;
@@ -395,7 +397,7 @@ namespace Projet1
             }
             return res;
         }
-
+        //cette fonction permet de savoir si deux valeurs sont identiques, elle a en parametre un tableau de double et renvoi un bool
         static bool ValIdentique(double[] val)
         {
             bool res = true;
@@ -409,7 +411,7 @@ namespace Projet1
             }
             return res;
         }
-
+        //cette fonction permet de tester la mediane, elle a en parametre un tableau de double et renvoi un bool
         static bool TestMediane(double[] val)
         {
             bool res = true;
@@ -418,7 +420,7 @@ namespace Projet1
                 res = false;
             return res;
         }
-
+        //cette fonction permet de modifier la mediane, elle a en parametre un tableau de double et renvoi un double
         static double MedianeCorrigee(double[] val)
         {
             double res = -1;
@@ -435,7 +437,7 @@ namespace Projet1
                 res = mediane;
             return res;
         }
-
+        //cette fonction permet de tester si le sommet est une feuille, elle a en parametre une variable de type sommet et renvoi un bool
         public bool EstFeuille(Sommet element)
         {
             bool feuille = false;
@@ -447,7 +449,7 @@ namespace Projet1
             }
             return feuille;
         }
-
+        //cette fonction permet d'afficher le chemin pr aller de la racine au sommet mais dans l'autre sens ,elle a en parametre une variable de type sommet et renvoi rien
         public void CheminALenvers(Sommet sommet)
         {
             if (sommet.Parent == null)
@@ -467,7 +469,7 @@ namespace Projet1
                 CheminALenvers(sommet.Parent);
             }
         }
-
+        //cette fonction permet d'afficher la feuille, elle a en parametre une variable de type sommet et un entier et renvoi rien
         public void AfficherFeuille(Sommet racine, int i)
         {
             if (racine == null)
@@ -488,7 +490,7 @@ namespace Projet1
                 AfficherFeuille(racine.FilsDroit,i);
             }
         }
-
+        //cette fonction permet d'obtenir la largeur de l'arbre, elle a en parametre une variable de type sommet et renvoi un entier
         public int LargeurArbre(Sommet racine)
         {
             if (racine == null)
@@ -498,7 +500,7 @@ namespace Projet1
             else
                 return LargeurArbre(racine.FilsGauche) + LargeurArbre(racine.FilsDroit);
         }
-
+        //cette fonction permet d'obtenir la valeur max entre deux variables, elle a en parametre deux entiers et renvoi un entier
         public int Max(int a, int b)
         {
             if (a < b)
@@ -516,7 +518,7 @@ namespace Projet1
             return 1 + Max(HauteurArbre(parent.FilsDroit), HauteurArbre(parent.FilsGauche));
 
         }
-
+        //cette fonction permet d'afficher le nombre de noeud de l'arbre, elle a en parametre une variable de type sommet et un entier et renvoi rien
         public void AffichageArbre(Sommet arbre, int count)
         {
             int largeur = LargeurArbre(racine);
@@ -527,6 +529,7 @@ namespace Projet1
         }
 
         //Exo3
+        //cette fonction permet d'afficher toute l'aroborescence, elle a en parametre une variable de type sommet et renvoi rien
         public void AffichageArborescence(Sommet arbre)
         {
             if (arbre != null)
