@@ -8,20 +8,16 @@ namespace Projet1
     class Program
     {
 
-        static double[] RemplirTableau(string[] soustab, double[] x1, double[] x2, double[] x3, double[] x4, int counter)
+        static double[] RemplirTableau(string[] soustab)
         {
             double[] newsoustab = new double[5];
             for (int i = 0; i < soustab.Length; i++)
                 newsoustab[i] = Double.Parse(soustab[i], CultureInfo.InvariantCulture);
 
-            x1[counter - 1] = newsoustab[1];
-            x2[counter - 1] = newsoustab[2];
-            x3[counter - 1] = newsoustab[3];
-            x4[counter - 1] = newsoustab[4];
             return newsoustab;
         }
 
-        static void ReadFile(String path, List<double[]> echantillon, double[] x1, double[] x2, double[] x3, double[] x4)
+        static void ReadFile(String path, List<double[]> echantillon)
         {
             int counter = 0;
             string line;
@@ -40,7 +36,7 @@ namespace Projet1
                     string[] soustab = line.Split(' ');
                     if (counter > 0)
                     {
-                        double[] newsoustab = RemplirTableau(soustab, x1, x2, x3, x4, counter);
+                        double[] newsoustab = RemplirTableau(soustab);
                         echantillon.Add(newsoustab);
                     }
                     counter++;
@@ -119,68 +115,68 @@ namespace Projet1
         static void Main(string[] args)
         {
             List<double[]> echantillon = new List<double[]>();
-            double[] x1 = new double[120];
-            double[] x2 = new double[120];
-            double[] x3 = new double[120];
-            double[] x4 = new double[120];
 
-            ReadFile("iris.txt", echantillon, x1, x2, x3, x4);
-            ArbreDecision arbre = new ArbreDecision(echantillon, x1, x2, x3, x4);
+            ReadFile("iris.txt", echantillon);
+            ArbreDecision arbre = new ArbreDecision(echantillon);
 
-            string lettre = "";
+            
 
             double x1N = 6.0;
             double x2N = 2.2;
             double x3N = 5.0;
             double x4N = 1.5;
 
-              do
+            string lettre = "";
+            do
               {
                   Console.WriteLine("----- MENU -----");
-                  Console.WriteLine("----- Choix 1 : Afficher la hauteur de l'arbre -----");
-                  Console.WriteLine("----- Choix 2 : Afficher la largeur de l'arbre -----");
-                  Console.WriteLine("----- Choix 3 : Afficher l'arbre sous forme arborescente -----");
-                  Console.WriteLine("----- Choix 4 : Afficher les feuilles -----");
-                  Console.WriteLine("----- Choix 5 : Prédire la variable Y d'un individu à saisir -----");
-                  Console.WriteLine("----- Presser Q ou q pour quitter -----");
+                  Console.WriteLine("-----  Entrer 1 : Afficher la hauteur de l'arbre -----");
+                  Console.WriteLine("-----  Entrer 2 : Afficher la largeur de l'arbre -----");
+                  Console.WriteLine("-----  Entrer 3 : Afficher l'arbre sous forme arborescente -----");
+                  Console.WriteLine("-----  Entrer 4 : Afficher les feuilles -----");
+                  Console.WriteLine("-----  Entrer 5 : Prédire la variable Y d'un individu à saisir -----");
+                  Console.WriteLine("-----  Entrer 6 : Créer un nouvel arbre -----");
+                Console.WriteLine("----- Presser Q ou q pour quitter -----");
                   lettre = Console.ReadLine();
 
                   switch (lettre)
                   {
                       case "1":
                           Console.WriteLine("Hauteur : " + arbre.HauteurArbre(arbre.Racine));
-                          break;
+                        Console.WriteLine();
+                        break;
                       case "2":
                           Console.WriteLine("Largeur : " + arbre.LargeurArbre(arbre.Racine));
-                          break;
+                        Console.WriteLine();
+                        break;
                       case "3":
-                          arbre.AffichageArborescence(arbre.Racine,1);
+                          Console.WriteLine("Affichage arbre, précisions pour Y = "+arbre.Y);
+                          arbre.AffichageArborescence(arbre.Racine);
+                          Console.WriteLine();
                           break;
                       case "4":
-                          arbre.AfficherFeuille(arbre.Racine);
-                          break;
+                          arbre.AfficherFeuille(arbre.Racine,0);
+                        Console.WriteLine();
+                        break;
                       case "5":
                           SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
                           double[] vals = {0,x1N,x2N,x3N,x4N };
                           arbre.InsertionIndivius(arbre.Racine,vals);
+                          Console.WriteLine();
                           break;
+                    case "6":
+                        arbre = new ArbreDecision(echantillon);
+                        break;
+                    case "Q": case "q":
+                        Console.WriteLine("Fin du programme");
+                        break;
+                    default:
+                        Console.WriteLine("Erreur dans la saisie ! ");
+                        break;
                   }
 
               } while (!lettre.Equals("Q") && !lettre.Equals("q"));
 
-            //AffichageTableau2D(echantillon);
-
-            //arbre.AffichageArborescence(arbre.Racine, 5);
-            //SaisitsUtilisateurIndividu(ref x1N, ref x2N, ref x3N, ref x4N);
-            //arbre.AffichageArbre(arbre.Racine, 1);
-
-            //double[] valeurs = { 0,x1N, x2N, x3N, x4N };
-           // arbre.InsertionIndivius(arbre.Racine, valeurs);
-            //double[] vals = {0,x1N,x2N,x3N,x4N };
-           // arbre.InsertionIndivius(arbre.Racine,valeurs);
-
-
-            Console.WriteLine("Fin programme");
             Console.ReadKey();
         }
 
