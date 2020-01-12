@@ -114,6 +114,8 @@ namespace Projet1
 
         static void Main(string[] args)
         {
+            Console.WriteLine("----- PROJET SDA : LEQSIOUER Mehdi & QOTB Badr -----");
+
             List<double[]> echantillon = new List<double[]>();
 
             ReadFile("iris.txt", echantillon);
