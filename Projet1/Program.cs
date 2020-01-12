@@ -137,7 +137,8 @@ namespace Projet1
                 Console.WriteLine("-----  Entrer 3 : Afficher l'arbre sous forme arborescente -----");
                 Console.WriteLine("-----  Entrer 4 : Afficher les feuilles -----");
                 Console.WriteLine("-----  Entrer 5 : Prédire la variable Y d'un individu à saisir -----");
-                Console.WriteLine("-----  Entrer 6 : Créer un nouvel arbre -----");
+                Console.WriteLine("-----  Entrer 6 : Précision des 10 échantillons (pour Y = 2 !) de l'énoncé question 6) -----");
+                Console.WriteLine("-----  Entrer 7 : Créer un nouvel arbre -----");
                 Console.WriteLine("----- Presser Q ou q pour quitter -----");
                 lettre = Console.ReadLine();
 
@@ -167,6 +168,19 @@ namespace Projet1
                         Console.WriteLine();
                         break;
                     case "6":
+                        double[,] tab = { { 7.7, 3.0, 6.1, 2.3 }, {6.2,2.8,4.8,1.8 } , {5.5,2.5,4.0,1.3 },{ 6.7,3.3,5.7,2.5},{ 6.0,2.2,5.0,1.5},{ 6.0,2.7,5.1,1.6}, {5.7,2.6,3.5,1.0 }, {5.8,2.6,4.0,1.2 },
+                        { 5.1,3.4,1.5,0.2},{ 5.4,3.9,1.3,0.4} };
+                        Console.WriteLine(tab[9, 3]);
+                        for (int i =0;i<9;i++)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Test pour : x1 ="+tab[i,0]+" x2 ="+tab[i,1]+" x3 ="+tab[i,2]+" x4 ="+tab[i,3] );
+                            double[] tmp = {0,tab[i,0],tab[i,1],tab[i,2],tab[i,3] };
+                            arbre.InsertionIndivius(arbre.Racine,tmp);
+                            Console.WriteLine();
+                        }
+                        break;
+                    case "7":
                         arbre = new ArbreDecision(echantillon);
                         break;
                     case "Q":

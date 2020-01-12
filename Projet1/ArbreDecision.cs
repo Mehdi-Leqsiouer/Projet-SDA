@@ -16,6 +16,19 @@ namespace Projet1
         int tailledepart;
         //Constructeur
 
+        public ArbreDecision(List<double[]> echantillon, int parY, int parSeuil1, int parSeuil2, int parMin, int parTailleMax)
+        {
+            this.racine = new Sommet(echantillon, 0, 0, null, null, null);
+            this.y = parY;
+            this.seuil1 = parSeuil1;
+            this.seuil2 = parSeuil2;
+            this.min = parMin;
+            this.tailleMax = parTailleMax;
+
+            this.tailledepart = echantillon.Count;
+            CreationArbre(racine, echantillon);
+        }
+
         public ArbreDecision(List<double[]> echantillon)
         {
             this.racine = new Sommet(echantillon, 0, 0, null, null, null);
